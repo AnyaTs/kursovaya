@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct work {
+  char surname;
+  char address;
+  char type_of_work;
+  int  price;
+  char duration;
+  struct work *next;
+  struct work *prev;
+} *head_work, *tail_work;
+
+void add_element(int n);
+void table_output();
+
+int main() {
+  
+  int n;
+  head_work = NULL;
+  tail_work = NULL;
+  printf("Здравствуйте, эта программа может помочь вам упорядочить ваши данные \n");
+	 	
+  printf("Введите количество элементов, которые вы хотите добавить: \n");
+  scanf("%d", &n);
+ 
+  add_element(n); 
+  table_output();
+
+}
+ 
+void add_element(int n)
+{
+    int i, num;
+    struct work *fnNode;
+    char surname;
+    char address;
+    char type_of_work;
+    int  price;
+    char duration;
+    if(n >= 1)
+    {
+        head_work = (struct work*)malloc(sizeof(struct work));
+ 
+        if(head_work != NULL)
+        {
+            printf("Введите фамилию: "); 
+            scanf("%c", &surname);
+            head_work->surname = surname;
+
+            printf("Введите адрес: "); 
+            scanf("%c", &address);
+ 
+            head_work->address = address;
+            
+
+            printf("Введите вид ремонтных работ: "); 
+            scanf("%c", &type_of_work);
+ 
+            head_work->type_of_work = type_of_work;
+ 
+            printf("Введите цену: "); 
+            scanf("%d", &price);
+ 
+            head_work->price = price;
+
+            printf("Введите длительность работ(неделя, месяц): "); 
+            scanf("%c", &duration);
+ 
+            head_work->duration = duration;
+
+            head_work->prev = NULL;
+            head_work->next = NULL;
+            head_work = tail_work;
+
+            for(i=2; i<=n; i++)
+            {
+                fnNode = (struct work*)malloc(sizeof(struct work));
+                if(fnNode != NULL){
+                  printf("Введите фамилию: "); 
+                  scanf("%c", &surname);
+                  fnNode->surname = surname;
+
+                  printf("Введите адрес: "); 
+                  scanf("%c", &address);
+ 
+                  fnNode->address = address;
+            
+
+                  printf("Введите вид ремонтных работ: "); 
+                  scanf("%c", &type_of_work);
+ 
+                  fnNode->type_of_work = type_of_work;
+ 
+                  printf("Введите цену: "); 
+                  scanf("%d", &price);
+ 
+                  fnNode->price = price;
+
+                  printf("Введите длительность работ(неделя, месяц): "); 
+                  scanf("%c", &duration);
+      
+                  fnNode->duration = duration;
+
+                  fnNode->prev =tail_work; 
+                  fnNode->next = NULL;
+ 
+                  tail_work->next = fnNode; 
+                  tail_work = fnNode;          
+                }
+                else
+                {
+                    printf("Вы не ввели достаточное количество элементов");
+                    break;
+                }
+            }
+        }
+        else
+        {
+            printf("Невозможно ввести элементы");
+        }
+    }
+}
+void table_output()
+{
+    struct work *tmp;
+    int n = 1;
+    if(tail_work == NULL)
+    {
+        printf("Не введены данные");
+    }
+    else
+    {
+        tmp = head_work;
+        printf("\n\nВведенные данные:\n");
+ 
+        while(tmp != NULL)
+        {   
+          printf("Фамилия: \n %c ", tmp->surname); 
+          printf("Адрес: \n %c ", tmp->address); 
+          printf("Вид ремонтных работ: \n %c ", tmp->type_of_work); 
+          printf("Цена: \n %d ", tmp->price); 
+          printf("длительность работ: \n %c ", tmp->duration); 
+          n++;
+          tmp = tmp->next;
+        }
+    }
+}
