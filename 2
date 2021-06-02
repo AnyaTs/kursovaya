@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define ADD_COMMAND "-add"
+#define EDIT_COMMAND "-edit"
+#define PRINT_COMMAND "-print"
+#define DELETE_COMMAND "-delete"
+
+#define MIN_ID 100
+
+struct order{
+    char *surname;
+    char *address;
+    char *type_of_work;
+    int  price;
+    char *duration;
+    struct order *next;
+    struct order *head;
+}; 
+struct order *head = NULL;
+
+struct order *tail = NULL;
+
+void process_arguments(int argc, char *argv[]);
+void incorrect_arguments();
+
+void print_help();
+int add_order(struct order *head);
+int print_all();
+int print_order(struct order *head);
+
+
+int main(int argc, char *argv[]) {
+    process_arguments(argc, argv);
+}
+
+void process_arguments(int argc, char **argv) {
+    if (argc == 1) {
+        print_help();
+        return;
+    }
+
+    if (!strcmp(argv[1], ADD_COMMAND)) {
+        if (argc == 7) {
+
+            double price = strtod(argv[5], NULL);
+            if (price < 0) {
+                printf("\nincorrect price argument!\n");
+                print_help();
+                return;
+            }
+
+            struct order *head = malloc(sizeof(struct order));
+            
+            head->surname = argv[2];
+            head->address = argv[3];
+            head->type_of_work = argv[4];
+            head->price = price;
+            head->duration = argv[6];
+            
+
+            
+            int result = add_order(head);
+            if (result) {
+                printf("\n Order successfully added!");
+            } else {
+                printf("\n Error while trying to add new order!");
+            }
+
+            return;
+        }
+
+        incorrect_arguments();
+        return;
+    }
+    if (!strcmp(argv[1], PRINT_COMMAND)) {
+        if (argc == 2) {
+            
+          
+          printf("\n %s", head->surname); 
+          printf(" \n %s ", head->address); 
+          printf("\n %s ", head->type_of_work); 
+          printf("\n %d ", head->price);
+          return;
+        } 
+      return;
+    }
+
+    incorrect_arguments();
+    return;
+}
+
+void print_help() {
+    printf("\n");
+    printf("EJournal app is designed to store information about orders.\n\n");
+    printf("Specify the command followed by the parameters separated by a space.\n");
+
+    printf("Possible commands:\n");
+    printf("\t-add [surname address type_of_work price]\n");
+    printf("\t-edit [surname address type_of_work price]\n");
+    printf("\t-print [id]\n");
+    printf("\t-delete [id]\n");
+    printf("\n");
+}
+
+void incorrect_arguments() {
+    printf("\nincorrect command line arguments!\n");
+    print_help();
+}
+
+int add_order(struct order *head) {
+  if (head != NULL){
+    printf("\n %s", head->surname);
+    printf("\n %s", head->address);
+    printf("\n %s", head->type_of_work);
+    printf("\n %d", head->price);
+    printf("\n %s", head->duration);
+  }
+  return 1;
+}
